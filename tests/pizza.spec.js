@@ -71,7 +71,7 @@ test('Franchising', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).click();
     await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.waitForNavigation();
+    // await page.waitForNavigation();
     await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
 
     await page.getByRole('button', { name: 'Create store' }).click();
@@ -94,14 +94,14 @@ test('Diner Dashboard', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).click();
     await page.getByRole('textbox', { name: 'Password' }).fill('diner');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.waitForNavigation();
+    // await page.waitForNavigation();
     await page.getByRole('link', { name: 'pd' }).click();
     await expect(page.getByRole('heading')).toContainText('Your pizza kitchen');
 
     await page.getByRole('link', { name: 'History' }).click();
     await expect(page.getByRole('heading')).toContainText('Mama Rucci, my my');
     await page.getByRole('link', { name: 'Logout' }).click();
-    await page.waitForNavigation();
+    // await page.waitForNavigation();
     await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
@@ -109,7 +109,7 @@ test('Diner Dashboard', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
     await page.getByRole('textbox', { name: 'Password' }).press('Enter');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.waitForNavigation();
+    // await page.waitForNavigation();
     await page.getByRole('link', { name: 'pf' }).click();
     await expect(page.getByRole('main')).toContainText(', Franchisee on 2');
 

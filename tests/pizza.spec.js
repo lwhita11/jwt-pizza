@@ -277,6 +277,26 @@ test('Create Store', async ({ page }) => {
             await route.fulfill({ json: storeRes });
         });
 
+        await page.route('*/**/api/franchise/14', async (route) => {
+            const storeRes = [
+                {
+                  "id": 2,
+                  "name": "pizzaPocket",
+                  "admins": [
+                    {
+                      "id": 14,
+                      "name": "pizza franchisee",
+                      "email": "f@jwt.com"
+                    }
+                  ],
+                  "stores": []
+                }
+              ];
+
+            expect(route.request().method()).toBe('GET');
+            await route.fulfill({ json: storeRes });
+        });
+
 
     await page.goto('/');
 

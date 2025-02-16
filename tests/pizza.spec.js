@@ -69,6 +69,45 @@ test('buy pizza with login', async ({ page }) => {await page.goto('/');
         expect(route.request().postDataJSON()).toMatchObject(orderReq);
         await route.fulfill({ json: orderRes });
       });
+
+      await page.route('*/**/api/order/verify', async (route) => {
+        const verifyReq = {
+            "jwt": "eyJpYXQ"
+          };
+        const verifyRes = {
+            "message": "valid",
+            "payload": {
+                "vendor": {
+                    "id": "lwhita11",
+                    "name": "Landon Whitaker"
+                },
+                "diner": {
+                    "id": 14,
+                    "name": "pizza franchisee",
+                    "email": "f@jwt.com"
+                },
+                "order": {
+                    "items": [
+                        {
+                            "menuId": 2,
+                            "description": "Veggie",
+                            "price": 0.0038
+                        },
+                        {
+                            "menuId": 3,
+                            "description": "Pepperoni",
+                            "price": 0.0042
+                        }
+                    ],
+                    "storeId": "36",
+                    "franchiseId": 2,
+                    "id": 29
+                }
+            }
+        };
+        expect(route.request().postDataJSON()).toMatchObject(verifyReq);
+        await route.fulfill({ json: verifyRes });
+      });
     
       await page.goto('/');
     
@@ -99,6 +138,11 @@ test('buy pizza with login', async ({ page }) => {await page.goto('/');
     
       // Check balance
       await expect(page.getByText('0.008')).toBeVisible();
+
+
+      await page.getByRole('button', { name: 'Verify' }).click();
+      await expect(page.locator('h3')).toContainText('JWT Pizza - valid');
+      
 
     //open and close a franchise
 
@@ -232,15 +276,15 @@ test('open/close a franchise', async ({ page }) => {await page.goto('/');
 });
 
 
-// test('navigates to the About page', async ({ page }) => {
-//     await page.goto('/');
-//     await page.getByRole('link', { name: 'About' }).click();
-//     await expect(page).toHaveURL('/about');
-//     await page.getByText('The secret sauce').click();
-//     await expect(page.getByRole('main')).toContainText('The secret sauce');
-//     await page.getByRole('link', { name: 'about', exact: true }).click();
-//     await page.getByText('The secret sauce').click();
-//     });
+test('navigates to the About page', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('link', { name: 'About' }).click();
+    await expect(page).toHaveURL('/about');
+    await page.getByText('The secret sauce').click();
+    await expect(page.getByRole('main')).toContainText('The secret sauce');
+    await page.getByRole('link', { name: 'about', exact: true }).click();
+    await page.getByText('The secret sauce').click();
+    });
 
 test('Login page', async ({ page }) => {
     await page.goto('/login');
@@ -482,7 +526,9 @@ test('Diner Dashboard', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Password' }).fill('diner');
     await page.getByRole('textbox', { name: 'Password' }).press('Enter');
     // await page.waitForNavigation();
-    await page.getByRole('link', { name: 'pd' }).click();
-    // await expect(page.getByRole('main')).toContainText(', Franchisee on 2');
+    await page.getByRole('link', { name: 'pd' }).click();    
+    await expect(page.getByRole('main')).toContainText('diner');
+    await page.goto('/admin');
+    await expect(page.getByRole('heading')).toContainText('Oops');
 
 });

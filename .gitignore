@@ -6,6 +6,7 @@ coverage
 dist
 **/.vite
 .nyc_output
+/grafanaApiKey.txt
 
 # Playwright
 node_modules/
